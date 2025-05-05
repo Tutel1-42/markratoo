@@ -9,8 +9,9 @@ import javafx.scene.layout.StackPane;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
 
-public abstract class Ingredient extends StackPane implements Edible {
+public abstract class Ingredient extends StackPane {
 	private String name;
+	private int value;
 	private boolean isEdible = false;
 	private boolean isBoiled = false;
 
@@ -20,8 +21,9 @@ public abstract class Ingredient extends StackPane implements Edible {
 	protected double mouseX, mouseY;
 	protected double lastPosX, lastPosY = 0;
 
-	protected Ingredient(String name, Image frontImage) {
+	protected Ingredient(String name, Image frontImage, int value) {
 		this.name = name;
+		this.value = value;
 
 		this.frontImage = frontImage;
 		imageView = new ImageView(this.frontImage);
@@ -55,7 +57,7 @@ public abstract class Ingredient extends StackPane implements Edible {
 
 		this.setOnMouseReleased(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
-				if (PlateSnapLogic.getInstance().snapAndConsume(this)) { // check if on plate
+				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 					event.consume();
 					return;
 				}
@@ -104,6 +106,7 @@ public abstract class Ingredient extends StackPane implements Edible {
 					Platform.runLater(() -> {
 						((Boilable) this).boil();
 						setBoiled(true);
+						setEdible(true);
 						System.out.println(isBoiled);
 					});
 				}
@@ -156,4 +159,12 @@ public abstract class Ingredient extends StackPane implements Edible {
 		this.frontImage = frontImage;
 	}
 
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+	
 }

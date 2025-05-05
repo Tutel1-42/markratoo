@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import logic.BoilSnapLogic;
+import logic.PlateSnapLogic;
 
 public abstract class RawMeat extends Ingredient implements Grillable, Boilable {
 	private boolean isGrilled = false;
@@ -24,8 +25,8 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 	private Thread grillingThread;
 	private boolean isGrilling;
 
-	public RawMeat(String name, Image frontImage, Image backImage) {
-		super(name, frontImage);
+	public RawMeat(String name, Image frontImage, Image backImage, int value) {
+		super(name, frontImage, value);
 
 		this.backImage = backImage;
 
@@ -51,6 +52,11 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		});
 
 		this.setOnMouseReleased(event -> {
+			
+			if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
+				event.consume();
+				return;
+			}
 
 			double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
 			double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
@@ -236,9 +242,11 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 	private void updateActualState() {
 		if (getFrontState() == CookingState.COOKED && getBackState() == CookingState.COOKED) {
 			setGrilled(true);
+			setEdible(true);
 		}
 		if (getFrontState() == CookingState.BURNT || getBackState() == CookingState.BURNT) {
 			setBurnt(true);
+			setEdible(false);
 		}
 	}
 

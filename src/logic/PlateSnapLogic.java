@@ -31,15 +31,15 @@ public class PlateSnapLogic {
 		double distance = Math.sqrt(Math.pow(centerX - PLATE_CENTER_X, 2) + Math.pow(centerY - PLATE_CENTER_Y, 2));
 
 		if (distance < SNAP_RADIUS) {
-			if (ingredient.isEdible() || ingredient.isBoiled()) {
-				scoreSystem.addScore(getScoreFor(ingredient));
-				ingredient.eat();
+			if (ingredient.isEdible()) {
+				scoreSystem.addScore(ingredient.getValue());
+				rootPane.getChildren().remove(ingredient); // destroy food
+				BoilSnapLogic.getInstance().clearOccupant(ingredient);
 			} else {
-				System.out.println("Not edible");
+				ingredient.goBack();
+				System.out.println("you can't eat this");
 			}
-
-			rootPane.getChildren().remove(ingredient); // destroy food
-
+			
 			return true;
 		}
 		return false;
@@ -51,26 +51,6 @@ public class PlateSnapLogic {
 
 	public static PlateSnapLogic getInstance() {
 		return instance;
-	}
-
-	private int getScoreFor(Ingredient food) {
-		if (food instanceof Watermelon) {
-			return 2;
-		} else if (food instanceof FrenchFries) {
-			return 3;
-		} else if (food instanceof ChineseCabbage) {
-			return 5;
-		} else if (food instanceof Ribeye) {
-			return 10;
-		} else if (food instanceof Spinach) {
-			return 5;
-		} else if (food instanceof Shrimp) {
-			return 10;
-		} else if (food instanceof Salmon) {
-			return 10;
-		} else
-			return 0;
-
 	}
 
 }

@@ -1,15 +1,14 @@
 package ingredient;
 
 import base.Boilable;
-import base.Edible;
 import base.Ingredient;
 import javafx.scene.image.Image;
 import logic.BoilSnapLogic;
 
-public class ChineseCabbage extends Ingredient implements Boilable, Edible {
+public class ChineseCabbage extends Ingredient implements Boilable {
 
 	public ChineseCabbage() {
-		super("chinese Cabbage", new Image(ClassLoader.getSystemResource("cc0.png").toString()));
+		super("chinese Cabbage", new Image(ClassLoader.getSystemResource("cc0.png").toString()), 50);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -20,11 +19,5 @@ public class ChineseCabbage extends Ingredient implements Boilable, Edible {
 
 	}
 
-	@Override
-	public void eat() {
-		System.out.println(this.getName() + " eaten");
-		// TODO Auto-generated method stub
-
-	}
 
 }
