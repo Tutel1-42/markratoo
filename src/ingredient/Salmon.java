@@ -5,7 +5,7 @@ import base.RawMeat;
 import javafx.scene.image.Image;
 import logic.BoilSnapLogic;
 
-public class Salmon extends RawMeat implements Edible{
+public class Salmon extends RawMeat implements Edible {
 
 	public Salmon() {
 		super("salmon", new Image(ClassLoader.getSystemResource("salmon0.png").toString()),
@@ -14,9 +14,9 @@ public class Salmon extends RawMeat implements Edible{
 
 	@Override
 	public void eat() {
-		System.out.println(this.getName() + "eaten");
+		System.out.println(this.getName() + " eaten");
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
