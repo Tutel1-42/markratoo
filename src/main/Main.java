@@ -1,7 +1,9 @@
 package main;
 
+import logic.BinSnapLogic;
 import logic.PlateSnapLogic;
 import logic.ScoreSystem;
+import gui.Bin;
 import gui.Kata;
 import gui.Plate;
 import ingredient.*;
@@ -33,9 +35,14 @@ public class Main extends Application {
 		Plate plate = new Plate();
 		plate.setLayoutX(730);
 		plate.setLayoutY(350);
+		
+		Bin bin = new Bin();
+		bin.setLayoutX(865);
+		bin.setLayoutY(8);
 
 		ScoreSystem scoreSystem = new ScoreSystem();
 		PlateSnapLogic.init(scoreSystem, root);
+		BinSnapLogic.init(root);
 
 		Label scoreLabel = new Label();
 		scoreLabel.setFont(new Font("Arial", 24));
@@ -44,9 +51,7 @@ public class Main extends Application {
 		scoreLabel.setLayoutY(20);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
 
-		root.getChildren().add(kata);
-		root.getChildren().add(plate);
-		root.getChildren().add(scoreLabel);
+		root.getChildren().addAll(kata, plate, bin, scoreLabel);
 
 		for (int i = 0; i < 5; i++) {
 			Spinach spinach = new Spinach();

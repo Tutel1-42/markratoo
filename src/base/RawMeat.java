@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
 
@@ -57,7 +58,12 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 				event.consume();
 				return;
 			}
-
+			
+			if (BinSnapLogic.getInstance().snapAndConsume(this)) {
+				event.consume();
+				return;
+			}
+			
 			double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
 			double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
 			boolean isOnGrill = centerX >= GRILL_X_MIN && centerX <= GRILL_X_MAX && centerY >= GRILL_Y_MIN

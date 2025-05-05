@@ -6,10 +6,9 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.layout.StackPane;
 
 public class Plate extends StackPane {
-	public static final DataFormat INGREDIENT_FORMAT = new DataFormat("base.Ingredient");
 
 	public Plate() {
-		Image image = new Image("file:res/plate.png");
+		Image image = new Image(ClassLoader.getSystemResource("plate.png").toString());
 		ImageView imageView = new ImageView(image);
 		this.getChildren().add(imageView);
 

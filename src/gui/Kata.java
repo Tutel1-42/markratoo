@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 public class Kata extends StackPane {
 
 	public Kata() {
-		Image image = new Image("file:res/kata.png");
+		Image image = new Image(ClassLoader.getSystemResource("kata.png").toString());
 		ImageView imageView = new ImageView(image);
 		this.getChildren().add(imageView);
 	}

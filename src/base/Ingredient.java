@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
+import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
 
@@ -57,10 +58,17 @@ public abstract class Ingredient extends StackPane {
 
 		this.setOnMouseReleased(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
+				
 				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 					event.consume();
 					return;
 				}
+				
+				if (BinSnapLogic.getInstance().snapAndConsume(this)) {
+					event.consume();
+					return;
+				}
+				
 				if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
 					startBoiling();
 					lastPosX = this.getTranslateX();
