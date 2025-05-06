@@ -19,5 +19,4 @@ public class ChineseCabbage extends Ingredient implements Boilable {
 
 	}
 
-
 }

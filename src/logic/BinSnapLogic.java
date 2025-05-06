@@ -31,7 +31,7 @@ public class BinSnapLogic {
 		if (distance < SNAP_RADIUS) {
 			rootPane.getChildren().remove(ingredient); // destroy food
 			BoilSnapLogic.getInstance().clearOccupant(ingredient);
-			
+
 			return true;
 		}
 		return false;

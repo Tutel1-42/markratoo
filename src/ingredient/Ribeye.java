@@ -12,5 +12,4 @@ public class Ribeye extends RawMeat {
 				new Image(ClassLoader.getSystemResource("ribeye0.png").toString()), 150);
 	}
 
-
 }

@@ -53,17 +53,17 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		});
 
 		this.setOnMouseReleased(event -> {
-			
+
 			if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 				event.consume();
 				return;
 			}
-			
+
 			if (BinSnapLogic.getInstance().snapAndConsume(this)) {
 				event.consume();
 				return;
 			}
-			
+
 			double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
 			double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
 			boolean isOnGrill = centerX >= GRILL_X_MIN && centerX <= GRILL_X_MAX && centerY >= GRILL_Y_MIN

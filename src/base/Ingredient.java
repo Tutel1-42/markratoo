@@ -58,17 +58,17 @@ public abstract class Ingredient extends StackPane {
 
 		this.setOnMouseReleased(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
-				
+
 				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 					event.consume();
 					return;
 				}
-				
+
 				if (BinSnapLogic.getInstance().snapAndConsume(this)) {
 					event.consume();
 					return;
 				}
-				
+
 				if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
 					startBoiling();
 					lastPosX = this.getTranslateX();
@@ -174,5 +174,5 @@ public abstract class Ingredient extends StackPane {
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
+
 }

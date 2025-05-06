@@ -19,5 +19,4 @@ public class Spinach extends Ingredient implements Boilable {
 
 	}
 
-
 }

@@ -39,7 +39,7 @@ public class PlateSnapLogic {
 				ingredient.goBack();
 				System.out.println("you can't eat this");
 			}
-			
+
 			return true;
 		}
 		return false;
