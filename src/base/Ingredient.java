@@ -3,6 +3,7 @@ package base;
 import container.Container;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -18,6 +19,8 @@ public abstract class Ingredient extends Pane {
 	private int value;
 	private boolean isEdible = false;
 	private boolean isBoiled = false;
+	private boolean isBurnt = false;
+	private boolean isGrilled = false;
 
 	private Image frontImage;
 	private ImageView imageView;
@@ -38,7 +41,21 @@ public abstract class Ingredient extends Pane {
 	}
 
 	private void enableDragAndDrop() {
+		
+		// enter
+		this.setOnMouseEntered(event -> {
+			if (this.getCursor() != Cursor.CLOSED_HAND) {
+				this.setCursor(Cursor.HAND);
+			}
+		});
+		
 		// click
+		this.setOnMouseEntered(event -> {
+			if (this.getCursor() != Cursor.CLOSED_HAND) {
+				this.setCursor(Cursor.HAND);
+			}
+		});
+		
 		this.setOnMousePressed(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
 				mouseX = event.getSceneX() - this.getTranslateX();
@@ -126,9 +143,11 @@ public abstract class Ingredient extends Pane {
 					Platform.runLater(() -> {
 						((Boilable) this).boil();
 						setBoiled(true);
-						setEdible(true);
+						if (!isBurnt()) {
+							setEdible(true);
+						}
+						
 						SoundPlayer.startSFX(SoundPlayer.getBoilingSFX());
-						System.out.println(isBoiled);
 					});
 				}
 			} catch (InterruptedException e) {
@@ -186,6 +205,22 @@ public abstract class Ingredient extends Pane {
 
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public boolean isBurnt() {
+		return isBurnt;
+	}
+
+	public void setBurnt(boolean isBurnt) {
+		this.isBurnt = isBurnt;
+	}
+
+	public boolean isGrilled() {
+		return isGrilled;
+	}
+
+	public void setGrilled(boolean isGrilled) {
+		this.isGrilled = isGrilled;
 	}
 
 }

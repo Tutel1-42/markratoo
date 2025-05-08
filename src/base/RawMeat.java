@@ -13,8 +13,6 @@ import logic.PlateSnapLogic;
 import logic.SoundPlayer;
 
 public abstract class RawMeat extends Ingredient implements Grillable, Boilable {
-	private boolean isGrilled = false;
-	private boolean isBurnt = false;
 
 	private CookingState frontState = CookingState.RAW;
 	private CookingState backState = CookingState.RAW;
@@ -29,12 +27,20 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 	private Thread grillingThread;
 	private boolean isGrilling;
+	
+	private boolean isDragging = false;
 
 	public RawMeat(String name, Image frontImage, Image backImage, int value) {
 		super(name, frontImage, value);
 
 		this.backImage = backImage;
 
+		this.setOnMouseEntered(event -> {
+			if (this.getCursor() != Cursor.CLOSED_HAND) {
+				this.setCursor(Cursor.HAND);
+			}
+		});
+		
 		this.setOnMousePressed(event -> {
 			this.requestFocus();
 			this.setCursor(Cursor.CLOSED_HAND);
@@ -49,8 +55,9 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 				grillingThread.interrupt();
 			}
 
+			isDragging = true;
 			this.getScene().setOnKeyPressed(keyEvent -> {
-				if (keyEvent.getCode() == KeyCode.SPACE) {
+				if (keyEvent.getCode() == KeyCode.SPACE && isDragging) {
 					flip();
 					keyEvent.consume();
 				}
@@ -60,6 +67,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 		this.setOnMouseReleased(event -> {
 			this.setCursor(Cursor.DEFAULT);
+			isDragging = false;
 			
 			if (this.getParent() instanceof Container) {
                 Container container = (Container) this.getParent();
@@ -120,7 +128,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		isGrilling = true;
 		grillingThread = new Thread(() -> {
 			try {
-				if (isGrilling && !theDownSideIsGrilled()) {
+				if (isGrilling && !theDownSideIsGrilled() && !theDownSideIsBurnt()) {
 					Thread.sleep(1000);
 					System.out.println("tick");
 					Thread.sleep(1000);
@@ -135,7 +143,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 					});
 				}
 
-				if (isGrilling && !isBurnt()) {
+				if (isGrilling && !theDownSideIsBurnt()) {
 					Thread.sleep(1000);
 					System.out.println("tick");
 					Thread.sleep(1000);
@@ -190,6 +198,20 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 			return false;
 		}
 	}
+	
+	public boolean theDownSideIsBurnt() {
+		if (isFrontDown()) {
+			if (getFrontState() == CookingState.BURNT) {
+				return true;
+			}
+			return false;
+		} else {
+			if (getBackState() == CookingState.BURNT) {
+				return true;
+			}
+			return false;
+		}
+	}
 
 	public void stopGrilling() {
 		isGrilling = false;
@@ -201,8 +223,6 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 	@Override
 	public void grill() {
-
-		setGrilled(true);
 
 		if (isFrontDown()) {
 			if (getFrontState() == CookingState.RAW) {
@@ -243,7 +263,6 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 		// edited cuz the one-side-burnt one won't get cooked
 		updateActualState();
-		SoundPlayer.startSFX(SoundPlayer.getBoilingSFX());
 	}
 
 	private void updateImage() {
@@ -275,22 +294,6 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 			setBurnt(true);
 			setEdible(false);
 		}
-	}
-
-	public boolean isGrilled() {
-		return isGrilled;
-	}
-
-	public void setGrilled(boolean isGrilled) {
-		this.isGrilled = isGrilled;
-	}
-
-	public boolean isBurnt() {
-		return isBurnt;
-	}
-
-	public void setBurnt(boolean isBurnt) {
-		this.isBurnt = isBurnt;
 	}
 
 	public CookingState getFrontState() {

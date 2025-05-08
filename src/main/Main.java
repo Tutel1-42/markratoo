@@ -58,7 +58,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setScene(createMainMenuScene(primaryStage));
 		primaryStage.setTitle("Main Menu");
-		SoundPlayer.startBGM();
+//		SoundPlayer.startBGM();
 		primaryStage.show();
 		primaryStage.setResizable(false);
 	}
