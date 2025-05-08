@@ -1,12 +1,16 @@
 package base;
 
+import container.Container;
 import javafx.application.Platform;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
+import logic.SoundPlayer;
 
 public abstract class RawMeat extends Ingredient implements Grillable, Boilable {
 	private boolean isGrilled = false;
@@ -18,10 +22,10 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 	private Image backImage;
 
-	private static final double GRILL_X_MIN = 535;
-	private static final double GRILL_X_MAX = 690;
-	private static final double GRILL_Y_MIN = 130;
-	private static final double GRILL_Y_MAX = 280;
+	private static final double GRILL_X_MIN = 645;
+	private static final double GRILL_X_MAX = 800;
+	private static final double GRILL_Y_MIN = 150;
+	private static final double GRILL_Y_MAX = 300;
 
 	private Thread grillingThread;
 	private boolean isGrilling;
@@ -32,6 +36,8 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		this.backImage = backImage;
 
 		this.setOnMousePressed(event -> {
+			this.requestFocus();
+			this.setCursor(Cursor.CLOSED_HAND);
 			mouseX = event.getSceneX() - this.getTranslateX();
 			mouseY = event.getSceneY() - this.getTranslateY();
 			this.toFront();
@@ -53,7 +59,18 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		});
 
 		this.setOnMouseReleased(event -> {
-
+			this.setCursor(Cursor.DEFAULT);
+			
+			if (this.getParent() instanceof Container) {
+                Container container = (Container) this.getParent();
+                container.getChildren().remove(this);
+                ((Pane) container.getScene().getRoot()).getChildren().add(this);
+                
+                var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
+                this.setTranslateX(scenePos.getX());
+                this.setTranslateY(scenePos.getY());
+			}
+			
 			if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 				event.consume();
 				return;
@@ -88,13 +105,14 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		});
 	}
 
+	@Override
 	public void goBack() {
 		if (isGrilled() || isBoiled()) {
 			this.setTranslateX(lastPosX);
 			this.setTranslateY(lastPosY);
 		} else {
-			this.setTranslateX(0);
-			this.setTranslateY(0);
+			this.setTranslateX(370);
+			this.setTranslateY(140);
 		}
 	}
 
@@ -152,7 +170,8 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		} else {
 			changeImageTo(getFrontImage());
 		}
-
+		
+//		SoundPlayer.stopSFX(SoundPlayer.getBoilingSFX());
 		System.out.println(isFrontDown);
 		System.out.println(frontState);
 		System.out.println(backState);
@@ -199,6 +218,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 			}
 		}
 
+		SoundPlayer.startSFX(SoundPlayer.getGrilingSFX());
 		updateImage();
 		updateActualState();
 	}
@@ -223,6 +243,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 		// edited cuz the one-side-burnt one won't get cooked
 		updateActualState();
+		SoundPlayer.startSFX(SoundPlayer.getBoilingSFX());
 	}
 
 	private void updateImage() {

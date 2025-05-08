@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import logic.SoundPlayer;
 
 public class Main extends Application {
 
@@ -57,7 +58,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setScene(createMainMenuScene(primaryStage));
 		primaryStage.setTitle("Main Menu");
+		SoundPlayer.startBGM();
 		primaryStage.show();
+		primaryStage.setResizable(false);
 	}
 
 	public static void main(String[] args) {

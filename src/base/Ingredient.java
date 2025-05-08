@@ -1,16 +1,19 @@
 package base;
 
+import container.Container;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
+import logic.SoundPlayer;
 
-public abstract class Ingredient extends StackPane {
+public abstract class Ingredient extends Pane {
 	private String name;
 	private int value;
 	private boolean isEdible = false;
@@ -21,6 +24,7 @@ public abstract class Ingredient extends StackPane {
 
 	protected double mouseX, mouseY;
 	protected double lastPosX, lastPosY = 0;
+	
 
 	protected Ingredient(String name, Image frontImage, int value) {
 		this.name = name;
@@ -28,7 +32,6 @@ public abstract class Ingredient extends StackPane {
 
 		this.frontImage = frontImage;
 		imageView = new ImageView(this.frontImage);
-		Ingredient.setAlignment(imageView, Pos.CENTER);
 		this.getChildren().add(imageView);
 
 		enableDragAndDrop();
@@ -41,7 +44,7 @@ public abstract class Ingredient extends StackPane {
 				mouseX = event.getSceneX() - this.getTranslateX();
 				mouseY = event.getSceneY() - this.getTranslateY();
 				this.toFront();
-
+				
 				stopBoiling();
 				event.consume();
 			}
@@ -58,6 +61,15 @@ public abstract class Ingredient extends StackPane {
 
 		this.setOnMouseReleased(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
+				if (this.getParent() instanceof Container) {
+	                Container container = (Container) this.getParent();
+	                container.getChildren().remove(this);
+	                ((Pane) container.getScene().getRoot()).getChildren().add(this);
+
+	                var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
+	                this.setTranslateX(scenePos.getX());
+	                this.setTranslateY(scenePos.getY());
+	            }
 
 				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 					event.consume();
@@ -88,8 +100,8 @@ public abstract class Ingredient extends StackPane {
 			this.setTranslateY(lastPosY);
 		} else {
 			BoilSnapLogic.getInstance().clearOccupant(this);
-			this.setTranslateX(0);
-			this.setTranslateY(0);
+			this.setTranslateX(370);
+			this.setTranslateY(140);
 		}
 	}
 
@@ -115,6 +127,7 @@ public abstract class Ingredient extends StackPane {
 						((Boilable) this).boil();
 						setBoiled(true);
 						setEdible(true);
+						SoundPlayer.startSFX(SoundPlayer.getBoilingSFX());
 						System.out.println(isBoiled);
 					});
 				}

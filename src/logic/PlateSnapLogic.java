@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 
 public class PlateSnapLogic {
 	private static PlateSnapLogic instance;
-	private static final double PLATE_CENTER_X = 810;
+	private static final double PLATE_CENTER_X = 460;
 	private static final double PLATE_CENTER_Y = 430;
 	private static final double SNAP_RADIUS = 80;
 

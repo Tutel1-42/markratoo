@@ -74,6 +74,8 @@ public class TutorialScene {
 			case ESCAPE:
 				stage.setScene(Main.createMainMenuScene(stage));
 				stage.setTitle("Main Menu");
+				SoundPlayer.stopBGM();
+				SoundPlayer.startBGM();
 				break;
 			default:
 				break;

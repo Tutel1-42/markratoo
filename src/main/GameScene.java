@@ -1,5 +1,6 @@
 package main;
 
+import container.ContainerTray;
 import gui.*;
 import ingredient.*;
 import javafx.scene.Scene;
@@ -18,11 +19,11 @@ public class GameScene {
 		root.setStyle("-fx-background-color: #FFC6A0;");
 
 		Kata kata = new Kata();
-		kata.setLayoutX(390);
-		kata.setLayoutY(50);
+		kata.setLayoutX(500);
+		kata.setLayoutY(70);
 
 		Plate plate = new Plate();
-		plate.setLayoutX(730);
+		plate.setLayoutX(380);
 		plate.setLayoutY(350);
 
 		Bin bin = new Bin();
@@ -42,33 +43,34 @@ public class GameScene {
 
 		root.getChildren().addAll(kata, plate, bin, scoreLabel);
 
-		for (int i = 0; i < 5; i++) {
-			Spinach spinach = new Spinach();
-			spinach.setLayoutX(20 + 30 * i);
-			spinach.setLayoutY(20);
-			Ribeye ribeye = new Ribeye();
-			ribeye.setLayoutX(20 + 30 * i);
-			ribeye.setLayoutY(110);
-			Watermelon watermelon = new Watermelon();
-			watermelon.setLayoutX(20 + 30 * i);
-			watermelon.setLayoutY(200);
-			FrenchFries fries = new FrenchFries();
-			fries.setLayoutX(20 + 30 * i);
-			fries.setLayoutY(290);
-			Shrimp shrimp = new Shrimp();
-			shrimp.setLayoutX(20 + 30 * i);
-			shrimp.setLayoutY(380);
-			ChineseCabbage cc = new ChineseCabbage();
-			cc.setLayoutX(20 + 30 * i);
-			cc.setLayoutY(470);
-			root.getChildren().addAll(spinach, ribeye, watermelon, fries, shrimp, cc);
-		}
 
+		ContainerTray tray1 = new ContainerTray("spinach");
+		tray1.setTranslateX(20);
+		tray1.setTranslateY(50);
+		ContainerTray tray2 = new ContainerTray("ribeye");
+		tray2.setTranslateX(20);
+		tray2.setTranslateY(270);
+		ContainerTray tray3 = new ContainerTray("bacon");
+		tray3.setTranslateX(180);
+		tray3.setTranslateY(50);
+		ContainerTray tray4 = new ContainerTray("chinese cabbage");
+		tray4.setTranslateX(180);
+		tray4.setTranslateY(270);
+		
+		Tray tray0 = new Tray();
+		tray0.setTranslateX(340);
+		tray0.setTranslateY(120);
+		
+		root.getChildren().addAll(tray1, tray2, tray3, tray4, tray0);
+		
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()) {
 			case ESCAPE:
 				stage.setScene(Main.createMainMenuScene(stage));
 				stage.setTitle("Main Menu");
+				SoundPlayer.stopBGM();
+				SoundPlayer.startBGM();
+				SoundPlayer.stopSFX(SoundPlayer.getBoilingSFX());
 				break;
 			default:
 				break;
