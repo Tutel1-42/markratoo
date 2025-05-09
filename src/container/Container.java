@@ -5,11 +5,9 @@ import java.util.List;
 
 import base.Ingredient;
 import ingredient.*;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 public abstract class Container extends Pane  {
 	

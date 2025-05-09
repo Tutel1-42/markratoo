@@ -1,13 +1,6 @@
 package logic;
 
 import base.Ingredient;
-import ingredient.ChineseCabbage;
-import ingredient.FrenchFries;
-import ingredient.Ribeye;
-import ingredient.Salmon;
-import ingredient.Shrimp;
-import ingredient.Spinach;
-import ingredient.Watermelon;
 import javafx.scene.layout.Pane;
 import util.ContainerRemover;
 

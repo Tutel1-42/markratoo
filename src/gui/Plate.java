@@ -2,7 +2,6 @@ package gui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DataFormat;
 import javafx.scene.layout.StackPane;
 
 public class Plate extends StackPane {

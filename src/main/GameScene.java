@@ -17,9 +17,9 @@ public class GameScene {
 		Scene scene = new Scene(root, 960, 540, Color.web("0xFFC6A0"));
 		root.setStyle("-fx-background-color: #FFC6A0;");
 
-		Kata kata = new Kata();
-		kata.setLayoutX(500);
-		kata.setLayoutY(70);
+		Pan pan = new Pan();
+		pan.setLayoutX(500);
+		pan.setLayoutY(70);
 
 		Plate plate = new Plate();
 		plate.setLayoutX(380);
@@ -35,7 +35,7 @@ public class GameScene {
 		
 		ScoreSystem scoreSystem = new ScoreSystem();
 		PlateSnapLogic.init(scoreSystem, root);
-		BinSnapLogic.init(root);
+		BinSnapLogic.init(scoreSystem, root);
 
 		Label scoreLabel = new Label();
 		scoreLabel.setFont(new Font("Impact", 30));
@@ -44,7 +44,7 @@ public class GameScene {
 		scoreLabel.setLayoutY(470);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
 
-		root.getChildren().addAll(kata, plate, bin, tray, scoreLabel);
+		root.getChildren().addAll(pan, plate, bin, tray, scoreLabel);
 		
 		OrderButton button1 = new OrderButton(root, 20, 50);
         OrderButton button2 = new OrderButton(root, 20, 270);

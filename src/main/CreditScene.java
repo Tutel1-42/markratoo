@@ -9,13 +9,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import util.SoundPlayer;
 
 public class CreditScene {
 
 	public static Scene createCreditScene(Stage stage) {
 		Pane root = new Pane();
-		Scene scene = new Scene(root, 960, 600, Color.web("0xFFC6A0"));
+		Scene scene = new Scene(root, 960, 540, Color.web("0xFFC6A0"));
 		root.setStyle("-fx-background-color: #FFC6A0;");
 		
 		Text creditIce = new Text("Sajakorn Hiranwipas");

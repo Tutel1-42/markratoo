@@ -2,13 +2,11 @@ package base;
 
 import container.Container;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
@@ -50,13 +48,9 @@ public abstract class Ingredient extends Pane {
 		});
 		
 		// click
-		this.setOnMouseEntered(event -> {
-			if (this.getCursor() != Cursor.CLOSED_HAND) {
-				this.setCursor(Cursor.HAND);
-			}
-		});
-		
 		this.setOnMousePressed(event -> {
+			this.setCursor(Cursor.CLOSED_HAND);
+			
 			if (event.getButton() == MouseButton.PRIMARY) {
 				mouseX = event.getSceneX() - this.getTranslateX();
 				mouseY = event.getSceneY() - this.getTranslateY();
@@ -76,7 +70,10 @@ public abstract class Ingredient extends Pane {
 			}
 		});
 
+		// drop
 		this.setOnMouseReleased(event -> {
+			this.setCursor(Cursor.DEFAULT);
+			
 			if (event.getButton() == MouseButton.PRIMARY) {
 				if (this.getParent() instanceof Container) {
 	                Container container = (Container) this.getParent();

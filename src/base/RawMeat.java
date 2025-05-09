@@ -35,81 +35,87 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 
 		this.backImage = backImage;
 
+		// enter
 		this.setOnMouseEntered(event -> {
 			if (this.getCursor() != Cursor.CLOSED_HAND) {
 				this.setCursor(Cursor.HAND);
 			}
 		});
 		
+		// click
 		this.setOnMousePressed(event -> {
-			this.requestFocus();
 			this.setCursor(Cursor.CLOSED_HAND);
-			mouseX = event.getSceneX() - this.getTranslateX();
-			mouseY = event.getSceneY() - this.getTranslateY();
-			this.toFront();
-
-			BoilSnapLogic.getInstance().clearOccupant(this);
-
-			stopBoiling();
-			if (grillingThread != null) {
-				grillingThread.interrupt();
+			
+			if (event.getButton() == MouseButton.PRIMARY) {
+				mouseX = event.getSceneX() - this.getTranslateX();
+				mouseY = event.getSceneY() - this.getTranslateY();
+				this.toFront();
+	
+				BoilSnapLogic.getInstance().clearOccupant(this);
+	
+				stopBoiling();
+				stopGrilling();
+	
+				isDragging = true;
+				this.getScene().setOnKeyPressed(keyEvent -> {
+					if (keyEvent.getCode() == KeyCode.SPACE && isDragging) {
+						flip();
+						keyEvent.consume();
+					}
+					
+				});
+				event.consume();
 			}
-
-			isDragging = true;
-			this.getScene().setOnKeyPressed(keyEvent -> {
-				if (keyEvent.getCode() == KeyCode.SPACE && isDragging) {
-					flip();
-					keyEvent.consume();
-				}
-			});
-			event.consume();
 		});
 
+		// drop
 		this.setOnMouseReleased(event -> {
 			this.setCursor(Cursor.DEFAULT);
 			isDragging = false;
 			
-			if (this.getParent() instanceof Container) {
-                Container container = (Container) this.getParent();
-                container.getChildren().remove(this);
-                ((Pane) container.getScene().getRoot()).getChildren().add(this);
-                
-                var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
-                this.setTranslateX(scenePos.getX());
-                this.setTranslateY(scenePos.getY());
-			}
-			
-			if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
-				event.consume();
-				return;
-			}
-
-			if (BinSnapLogic.getInstance().snapAndConsume(this)) {
-				event.consume();
-				return;
-			}
-
-			double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
-			double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
-			boolean isOnGrill = centerX >= GRILL_X_MIN && centerX <= GRILL_X_MAX && centerY >= GRILL_Y_MIN
-					&& centerY <= GRILL_Y_MAX;
-
-			if (isOnGrill && this instanceof Grillable) {
-				lastPosX = this.getTranslateX();
-				lastPosY = this.getTranslateY();
-				startGrilling();
-			} else {
-				stopGrilling();
-
-				if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				if (this.getParent() instanceof Container) {
+	                Container container = (Container) this.getParent();
+	                container.getChildren().remove(this);
+	                ((Pane) container.getScene().getRoot()).getChildren().add(this);
+	                
+	                var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
+	                this.setTranslateX(scenePos.getX());
+	                this.setTranslateY(scenePos.getY());
+				}
+				
+				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
+					event.consume();
+					return;
+				}
+	
+				if (BinSnapLogic.getInstance().snapAndConsume(this)) {
+					event.consume();
+					return;
+				}
+	
+				double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
+				double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
+				boolean isOnGrill = centerX >= GRILL_X_MIN && centerX <= GRILL_X_MAX && centerY >= GRILL_Y_MIN
+						&& centerY <= GRILL_Y_MAX;
+	
+				if (isOnGrill && this instanceof Grillable) {
 					lastPosX = this.getTranslateX();
 					lastPosY = this.getTranslateY();
-					startBoiling();
+					startGrilling();
 				} else {
-					goBack();
+					stopGrilling();
+	
+					if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
+						lastPosX = this.getTranslateX();
+						lastPosY = this.getTranslateY();
+						startBoiling();
+					} else {
+						goBack();
+					}
 				}
+				event.consume();
 			}
-			event.consume();
 		});
 	}
 
