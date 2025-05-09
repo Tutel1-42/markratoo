@@ -70,18 +70,11 @@ public class TutorialScene {
 
 		root.getChildren().addAll(kata, plate, bin, scoreLabel, spinach, ribeye, watermelon, fries, shrimp, cc,
 				instruction);
-		scene.setOnKeyPressed(e -> {
-			switch (e.getCode()) {
-			case ESCAPE:
-				stage.setScene(Main.createMainMenuScene(stage));
-				stage.setTitle("Main Menu");
-				SoundPlayer.stopBGM();
-				SoundPlayer.startBGM();
-				break;
-			default:
-				break;
-			}
-		});
+
+		MainMenuButton mainMenuButton = new MainMenuButton(stage);
+        mainMenuButton.setLayoutX(0);
+        mainMenuButton.setLayoutY(0);
+        root.getChildren().add(mainMenuButton);
 
 		return scene;
 	}

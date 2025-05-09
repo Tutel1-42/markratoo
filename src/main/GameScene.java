@@ -1,9 +1,7 @@
 package main;
 
-import container.ContainerPlate;
-import container.ContainerTray;
+
 import gui.*;
-import ingredient.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -11,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import logic.*;
-import util.SoundPlayer;
 
 public class GameScene {
 
@@ -41,13 +38,13 @@ public class GameScene {
 		BinSnapLogic.init(root);
 
 		Label scoreLabel = new Label();
-		scoreLabel.setFont(new Font("Arial", 24));
+		scoreLabel.setFont(new Font("Impact", 30));
 		scoreLabel.setTextFill(Color.BLACK);
-		scoreLabel.setLayoutX(750);
-		scoreLabel.setLayoutY(20);
+		scoreLabel.setLayoutX(650);
+		scoreLabel.setLayoutY(470);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
 
-		root.getChildren().addAll(kata, plate, bin, scoreLabel, tray);
+		root.getChildren().addAll(kata, plate, bin, tray, scoreLabel);
 		
 		OrderButton button1 = new OrderButton(root, 20, 50);
         OrderButton button2 = new OrderButton(root, 20, 270);
@@ -56,19 +53,6 @@ public class GameScene {
         
         root.getChildren().addAll(button1,button2,button3,button4);
 		
-		scene.setOnKeyPressed(e -> {
-			switch (e.getCode()) {
-			case ESCAPE:
-				stage.setScene(Main.createMainMenuScene(stage));
-				stage.setTitle("Main Menu");
-				SoundPlayer.stopBGM();
-				SoundPlayer.startBGM();
-				SoundPlayer.stopSFX(SoundPlayer.getBoilingSFX());
-				break;
-			default:
-				break;
-			}
-		});
 
 		return scene;
 	}

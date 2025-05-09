@@ -1,5 +1,6 @@
 package main;
 
+import gui.MainMenuButton;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,18 +42,10 @@ public class CreditScene {
 		ImageAoo.setFitHeight(250);
 		ImageAoo.setFitWidth(250);
 		
-		scene.setOnKeyPressed(e -> {
-			switch (e.getCode()) {
-			case ESCAPE:
-				stage.setScene(Main.createMainMenuScene(stage));
-				stage.setTitle("Main Menu");
-				SoundPlayer.stopBGM();
-				SoundPlayer.startBGM();
-				break;
-			default:
-				break;
-			}
-		});
+		MainMenuButton mainMenuButton = new MainMenuButton(stage);
+        mainMenuButton.setLayoutX(0);
+        mainMenuButton.setLayoutY(0);
+        root.getChildren().add(mainMenuButton);
 		
 		root.getChildren().addAll(creditIce,creditAoo,ImageIce,ImageAoo);
 		return scene;
