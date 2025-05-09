@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -8,11 +7,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.Main;
 
-public class MainMenuButton extends Pane {
+public class HomeButton extends Pane {
 
-	public MainMenuButton(Stage stage) {
+	public HomeButton(Stage stage) {
 		
-		ImageView imageView = new ImageView(new Image(ClassLoader.getSystemResource("order.png").toString()));
+		ImageView imageView = new ImageView(new Image(ClassLoader.getSystemResource("home.png").toString()));
         this.getChildren().add(imageView);
         
 		this.setOnMouseClicked(event -> {

@@ -1,6 +1,6 @@
 package main;
 
-import gui.MainMenuButton;
+import gui.HomeButton;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,10 +42,10 @@ public class CreditScene {
 		ImageAoo.setFitHeight(250);
 		ImageAoo.setFitWidth(250);
 		
-		MainMenuButton mainMenuButton = new MainMenuButton(stage);
-        mainMenuButton.setLayoutX(0);
-        mainMenuButton.setLayoutY(0);
-        root.getChildren().add(mainMenuButton);
+		HomeButton homeButton = new HomeButton(stage);
+		homeButton.setLayoutX(10);
+		homeButton.setLayoutY(10);
+        root.getChildren().add(homeButton);
 		
 		root.getChildren().addAll(creditIce,creditAoo,ImageIce,ImageAoo);
 		return scene;

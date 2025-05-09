@@ -71,10 +71,10 @@ public class TutorialScene {
 		root.getChildren().addAll(kata, plate, bin, scoreLabel, spinach, ribeye, watermelon, fries, shrimp, cc,
 				instruction);
 
-		MainMenuButton mainMenuButton = new MainMenuButton(stage);
-        mainMenuButton.setLayoutX(0);
-        mainMenuButton.setLayoutY(0);
-        root.getChildren().add(mainMenuButton);
+		HomeButton homeButton = new HomeButton(stage);
+		homeButton.setLayoutX(10);
+		homeButton.setLayoutY(10);
+        root.getChildren().add(homeButton);
 
 		return scene;
 	}
