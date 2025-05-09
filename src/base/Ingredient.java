@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
-import logic.SoundPlayer;
+import util.SoundPlayer;
 
 public abstract class Ingredient extends Pane {
 	private String name;

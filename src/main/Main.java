@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import logic.SoundPlayer;
+import util.SoundPlayer;
 
 public class Main extends Application {
 
@@ -37,6 +37,17 @@ public class Main extends Application {
 			primaryStage.setScene(tutorialScene);
 			primaryStage.setTitle("Tutorial");
 		});
+		
+		Button creditButton = new Button("credits");
+		creditButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
+		creditButton.setStyle("-fx-background-color: #45fc03;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
+				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
+				+ "-fx-pref-height: 40;");
+		creditButton.setOnAction(e -> {
+			Scene creditScene = CreditScene.createCreditScene(primaryStage);
+			primaryStage.setScene(creditScene);
+			primaryStage.setTitle("Credit");
+		});
 
 		Button exitButton = new Button("exit");
 		exitButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
@@ -47,7 +58,7 @@ public class Main extends Application {
 			primaryStage.close();
 		});
 
-		VBox layout = new VBox(20, titleText, startButton, tutorialButton, exitButton); // layout for button
+		VBox layout = new VBox(20, titleText, startButton, tutorialButton, creditButton, exitButton); // layout for button
 		layout.setAlignment(Pos.CENTER);
 		layout.setStyle("-fx-background-color: #FFDAB9;");
 
@@ -58,7 +69,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setScene(createMainMenuScene(primaryStage));
 		primaryStage.setTitle("Main Menu");
-//		SoundPlayer.startBGM();
+		SoundPlayer.startBGM();
 		primaryStage.show();
 		primaryStage.setResizable(false);
 	}

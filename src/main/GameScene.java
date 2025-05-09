@@ -1,5 +1,6 @@
 package main;
 
+import container.ContainerPlate;
 import container.ContainerTray;
 import gui.*;
 import ingredient.*;
@@ -10,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import logic.*;
+import util.SoundPlayer;
 
 public class GameScene {
 
@@ -29,7 +31,11 @@ public class GameScene {
 		Bin bin = new Bin();
 		bin.setLayoutX(865);
 		bin.setLayoutY(8);
-
+		
+		Tray tray = new Tray();
+		tray.setTranslateX(340);
+		tray.setTranslateY(120);
+		
 		ScoreSystem scoreSystem = new ScoreSystem();
 		PlateSnapLogic.init(scoreSystem, root);
 		BinSnapLogic.init(root);
@@ -41,27 +47,14 @@ public class GameScene {
 		scoreLabel.setLayoutY(20);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
 
-		root.getChildren().addAll(kata, plate, bin, scoreLabel);
-
-
-		ContainerTray tray1 = new ContainerTray("spinach");
-		tray1.setTranslateX(20);
-		tray1.setTranslateY(50);
-		ContainerTray tray2 = new ContainerTray("ribeye");
-		tray2.setTranslateX(20);
-		tray2.setTranslateY(270);
-		ContainerTray tray3 = new ContainerTray("bacon");
-		tray3.setTranslateX(180);
-		tray3.setTranslateY(50);
-		ContainerTray tray4 = new ContainerTray("chinese cabbage");
-		tray4.setTranslateX(180);
-		tray4.setTranslateY(270);
+		root.getChildren().addAll(kata, plate, bin, scoreLabel, tray);
 		
-		Tray tray0 = new Tray();
-		tray0.setTranslateX(340);
-		tray0.setTranslateY(120);
-		
-		root.getChildren().addAll(tray1, tray2, tray3, tray4, tray0);
+		OrderButton button1 = new OrderButton(root, 20, 50);
+        OrderButton button2 = new OrderButton(root, 20, 270);
+        OrderButton button3 = new OrderButton(root, 180, 50);
+        OrderButton button4 = new OrderButton(root, 180, 270);
+        
+        root.getChildren().addAll(button1,button2,button3,button4);
 		
 		scene.setOnKeyPressed(e -> {
 			switch (e.getCode()) {

@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import logic.*;
+import util.SoundPlayer;
 
 public class TutorialScene {
 

@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
-import logic.SoundPlayer;
+import util.SoundPlayer;
 
 public abstract class RawMeat extends Ingredient implements Grillable, Boilable {
 
@@ -289,6 +289,10 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		if (getFrontState() == CookingState.COOKED && getBackState() == CookingState.COOKED) {
 			setGrilled(true);
 			setEdible(true);
+			
+			if (this.getName().equals("salmon")) {
+				this.setValue(100);
+			}
 		}
 		if (getFrontState() == CookingState.BURNT || getBackState() == CookingState.BURNT) {
 			setBurnt(true);

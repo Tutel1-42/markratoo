@@ -1,4 +1,4 @@
-package logic;
+package util;
 
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;

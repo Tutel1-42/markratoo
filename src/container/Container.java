@@ -73,11 +73,24 @@ public abstract class Container extends Pane  {
 	
 	public abstract void arraign();
 
+    public void removeIngredient(Ingredient ingredient) {
+        duplicationList.remove(ingredient);
+        this.getChildren().remove(ingredient);
+    }
+	
 	public Ingredient getIngredient() {
 		return ingredient;
 	}
 
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
+	}
+
+	public List<Ingredient> getDuplicationList() {
+		return duplicationList;
+	}
+
+	public void setDuplicationList(List<Ingredient> duplicationList) {
+		this.duplicationList = duplicationList;
 	}
 }

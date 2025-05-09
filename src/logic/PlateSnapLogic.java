@@ -9,6 +9,7 @@ import ingredient.Shrimp;
 import ingredient.Spinach;
 import ingredient.Watermelon;
 import javafx.scene.layout.Pane;
+import util.ContainerRemover;
 
 public class PlateSnapLogic {
 	private static PlateSnapLogic instance;
@@ -33,8 +34,11 @@ public class PlateSnapLogic {
 		if (distance < SNAP_RADIUS) {
 			if (ingredient.isEdible()) {
 				scoreSystem.addScore(ingredient.getValue());
-				rootPane.getChildren().remove(ingredient); // destroy food
+				rootPane.getChildren().remove(ingredient);
 				BoilSnapLogic.getInstance().clearOccupant(ingredient);
+				
+				ContainerRemover.FindContainerThenRemove(rootPane, ingredient);
+				
 			} else {
 				ingredient.goBack();
 				System.out.println("you can't eat this");

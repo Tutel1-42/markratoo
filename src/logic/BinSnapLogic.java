@@ -9,6 +9,7 @@ import ingredient.Shrimp;
 import ingredient.Spinach;
 import ingredient.Watermelon;
 import javafx.scene.layout.Pane;
+import util.ContainerRemover;
 
 public class BinSnapLogic {
 	private static BinSnapLogic instance;
@@ -31,7 +32,9 @@ public class BinSnapLogic {
 		if (distance < SNAP_RADIUS) {
 			rootPane.getChildren().remove(ingredient); // destroy food
 			BoilSnapLogic.getInstance().clearOccupant(ingredient);
-
+			
+			ContainerRemover.FindContainerThenRemove(rootPane, ingredient);
+			
 			return true;
 		}
 		return false;

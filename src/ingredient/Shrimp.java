@@ -1,9 +1,7 @@
 package ingredient;
 
-import base.Ingredient;
 import base.RawMeat;
 import javafx.scene.image.Image;
-import logic.BoilSnapLogic;
 
 public class Shrimp extends RawMeat {
 
