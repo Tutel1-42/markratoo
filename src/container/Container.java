@@ -9,73 +9,55 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-public abstract class Container extends Pane  {
-	
+public abstract class Container extends Pane {
+
 	private Image image;
 	private String ingredientName;
 	private Ingredient ingredient;
+	protected static final int DUPLICATE_COUNT = 3;
 	protected List<Ingredient> duplicationList = new ArrayList<Ingredient>();
-	
+
 	public Container(Image image, String ingredientName) {
 		this.image = image;
 		this.ingredientName = ingredientName;
-		
+
 		ImageView imageView = new ImageView(this.image);
 		this.getChildren().add(imageView);
-		
+
 		addIngredient();
 		arraign();
 	}
-	
-	private void addIngredient() {
-		for (int i = 0; i < 3; i++) {
-			
-			switch (ingredientName) {
-	        case "bacon":
-	            ingredient = new Bacon();
-	            break;
-	        case "chinese cabbage":
-	            ingredient = new ChineseCabbage();
-	            break;
-	        case "french fries":
-	            ingredient = new FrenchFries();
-	            break;
-	        case "pork":
-	            ingredient = new Pork();
-	            break;
-	        case "ribeye":
-	            ingredient = new Ribeye();
-	            break;
-	        case "salmon":
-	            ingredient = new Salmon();
-	            break;
-	        case "shrimp":
-	            ingredient = new Shrimp();
-	            break;
-	        case "spinach":
-	            ingredient = new Spinach();
-	            break;
-	        case "tongue":
-	            ingredient = new Tongue();
-	            break;
-	        case "watermelon":
-	            ingredient = new Watermelon();
-	            break;
-	        default:
-	            throw new IllegalArgumentException("Unknown ingredient");
-	    }
-			duplicationList.add(ingredient);
-		}
-		
+
+	private Ingredient createIngredientByName(String name) {
+		return switch (name) {
+		case "bacon" -> new Bacon();
+		case "chinese cabbage" -> new ChineseCabbage();
+		case "french fries" -> new FrenchFries();
+		case "pork" -> new Pork();
+		case "ribeye" -> new Ribeye();
+		case "salmon" -> new Salmon();
+		case "shrimp" -> new Shrimp();
+		case "spinach" -> new Spinach();
+		case "tongue" -> new Tongue();
+		case "watermelon" -> new Watermelon();
+		default -> throw new IllegalArgumentException("Unknown ingredient: " + name);
+		};
 	}
-	
+
+	private void addIngredient() {
+		for (int i = 0; i < DUPLICATE_COUNT; i++) {
+			Ingredient ing = createIngredientByName(ingredientName);
+			duplicationList.add(ing);
+		}
+	}
+
 	public abstract void arraign();
 
-    public void removeIngredient(Ingredient ingredient) {
-        duplicationList.remove(ingredient);
-        this.getChildren().remove(ingredient);
-    }
-	
+	public void removeIngredient(Ingredient ingredient) {
+		duplicationList.remove(ingredient);
+		this.getChildren().remove(ingredient);
+	}
+
 	public Ingredient getIngredient() {
 		return ingredient;
 	}

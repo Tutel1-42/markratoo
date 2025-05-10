@@ -11,15 +11,13 @@ public class ContainerTray extends Container {
 
 	@Override
 	public void arraign() {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < DUPLICATE_COUNT; i++) {
 			Ingredient ingre = duplicationList.get(i);
-			ingre.setTranslateX(i*20);
-			ingre.setTranslateY(i*15+10);
+			ingre.setTranslateX(i * 20);
+			ingre.setTranslateY(i * 15 + 10);
 			this.getChildren().add(ingre);
 		}
-		
+
 	}
 
-
-	
 }

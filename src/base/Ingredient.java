@@ -6,11 +6,17 @@ import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
 import logic.PlateSnapLogic;
 import util.SoundPlayer;
+
+/**
+ * Abstract base class for all ingredients in this game. Provides drag and drop
+ * functionality, state of ingredients , and image handling.
+ */
 
 public abstract class Ingredient extends Pane {
 	private String name;
@@ -19,13 +25,15 @@ public abstract class Ingredient extends Pane {
 	private boolean isBoiled = false;
 	private boolean isBurnt = false;
 	private boolean isGrilled = false;
+	private static final double DEFAULT_POS_X = 370;
+	private static final double DEFAULT_POS_Y = 140;
+	private static final long BOIL_DURATION_MS = 4000;
 
 	private Image frontImage;
 	private ImageView imageView;
 
 	protected double mouseX, mouseY;
 	protected double lastPosX, lastPosY = 0;
-	
 
 	protected Ingredient(String name, Image frontImage, int value) {
 		this.name = name;
@@ -39,29 +47,37 @@ public abstract class Ingredient extends Pane {
 	}
 
 	private void enableDragAndDrop() {
-		
-		// enter
+		setupMouseEnterHandler();
+		setupMousePressHandler();
+		setupMouseDragHandler();
+		setupMouseReleaseHandler();
+	}
+
+	private void setupMouseEnterHandler() {
 		this.setOnMouseEntered(event -> {
 			if (this.getCursor() != Cursor.CLOSED_HAND) {
 				this.setCursor(Cursor.HAND);
 			}
 		});
-		
-		// click
+	}
+
+	private void setupMousePressHandler() {
 		this.setOnMousePressed(event -> {
 			this.setCursor(Cursor.CLOSED_HAND);
-			
+
 			if (event.getButton() == MouseButton.PRIMARY) {
 				mouseX = event.getSceneX() - this.getTranslateX();
 				mouseY = event.getSceneY() - this.getTranslateY();
 				this.toFront();
-				
+
 				stopBoiling();
 				event.consume();
 			}
 		});
 
-		// drag
+	}
+
+	private void setupMouseDragHandler() {
 		this.setOnMouseDragged(event -> {
 			if (event.getButton() == MouseButton.PRIMARY) {
 				this.setTranslateX(event.getSceneX() - mouseX);
@@ -69,53 +85,68 @@ public abstract class Ingredient extends Pane {
 				event.consume();
 			}
 		});
+	}
 
-		// drop
+	private void setupMouseReleaseHandler() {
 		this.setOnMouseReleased(event -> {
 			this.setCursor(Cursor.DEFAULT);
-			
+
 			if (event.getButton() == MouseButton.PRIMARY) {
-				if (this.getParent() instanceof Container) {
-	                Container container = (Container) this.getParent();
-	                container.getChildren().remove(this);
-	                ((Pane) container.getScene().getRoot()).getChildren().add(this);
-
-	                var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
-	                this.setTranslateX(scenePos.getX());
-	                this.setTranslateY(scenePos.getY());
-	            }
-
-				if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
-					event.consume();
+				handleContainerTransfer();
+				if (trySnapToBinOrPlate(event))
 					return;
-				}
-
-				if (BinSnapLogic.getInstance().snapAndConsume(this)) {
-					event.consume();
-					return;
-				}
-
-				if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
-					startBoiling();
-					lastPosX = this.getTranslateX();
-					lastPosY = this.getTranslateY();
-				} else {
-					goBack();
-				}
+				if (!trySnapToBoil())
+					resetPosition();
 				event.consume();
 			}
 		});
-
 	}
 
-	public void goBack() {
+	private void handleContainerTransfer() {
+		if (this.getParent() instanceof Container) {
+			Container container = (Container) this.getParent();
+			container.getChildren().remove(this);
+			((Pane) container.getScene().getRoot()).getChildren().add(this);
+
+			var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
+			this.setTranslateX(scenePos.getX());
+			this.setTranslateY(scenePos.getY());
+		}
+	}
+
+	private boolean trySnapToBinOrPlate(MouseEvent event) {
+		if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
+			event.consume();
+			return true;
+		}
+
+		if (BinSnapLogic.getInstance().snapAndConsume(this)) {
+			event.consume();
+			return true;
+		}
+		return false;
+	}
+
+	private boolean trySnapToBoil() {
+		if (this instanceof Boilable && BoilSnapLogic.getInstance().snapToNearest(this)) {
+			startBoiling();
+			lastPosX = this.getTranslateX();
+			lastPosY = this.getTranslateY();
+			return true;
+		} else {
+			resetPosition();
+			return false;
+		}
+	}
+
+	public void resetPosition() {
 		if (isBoiled()) {
 			this.setTranslateX(lastPosX);
 			this.setTranslateY(lastPosY);
 		} else {
 			BoilSnapLogic.getInstance().clearOccupant(this);
-			this.setTranslateX(370);
-			this.setTranslateY(140);
+			this.setTranslateX(DEFAULT_POS_X);
+			this.setTranslateY(DEFAULT_POS_Y);
 		}
 	}
 
@@ -135,7 +166,7 @@ public abstract class Ingredient extends Pane {
 		isBoiling = true;
 		boilingThread = new Thread(() -> {
 			try {
-				Thread.sleep(4000);
+				Thread.sleep(BOIL_DURATION_MS);
 				if (isBoiling) {
 					Platform.runLater(() -> {
 						((Boilable) this).boil();
@@ -143,7 +174,7 @@ public abstract class Ingredient extends Pane {
 						if (!isBurnt()) {
 							setEdible(true);
 						}
-						
+
 						SoundPlayer.startSFX(SoundPlayer.getBoilingSFX());
 					});
 				}

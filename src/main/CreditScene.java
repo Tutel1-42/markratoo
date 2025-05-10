@@ -12,44 +12,39 @@ import javafx.stage.Stage;
 
 public class CreditScene {
 
+	public static void addCredit(Pane root, String name, String imgName, double Xtext, double Ytext, double Ximg,
+			double Yimg) {
+		Image profIMG = new Image(ClassLoader.getSystemResource(imgName).toString());
+		ImageView profView = new ImageView(profIMG);
+		profView.setX(Ximg);
+		profView.setY(Yimg);
+		profView.setFitHeight(250);
+		profView.setFitWidth(250);
+
+		Text Fname = new Text(name);
+		Fname.setFont(Font.font("Arial", 28));
+		Fname.setX(Xtext);
+		Fname.setY(Ytext);
+
+		root.getChildren().addAll(profView, Fname);
+
+	}
+
 	public static Scene createCreditScene(Stage stage) {
 		Pane root = new Pane();
 		Scene scene = new Scene(root, 960, 540, Color.web("0xFFC6A0"));
 		root.setStyle("-fx-background-color: #FFC6A0;");
-		
-		Text creditIce = new Text("Sajakorn Hiranwipas");
-		creditIce.setFont(Font.font("Arial", 28));
-		creditIce.setX(150);
-		creditIce.setY(400);
-		
-		Image profIce = new Image(ClassLoader.getSystemResource("iceprof.png").toString());
-		ImageView ImageIce = new ImageView(profIce);
-		ImageIce.setX(170);
-		ImageIce.setY(90);
-		ImageIce.setFitHeight(250);
-		ImageIce.setFitWidth(250);
-		
-		Text creditAoo = new Text("Rahut Nopnirapath");
-		creditAoo.setFont(Font.font("Arial", 28));
-		creditAoo.setX(500);
-		creditAoo.setY(400);
-		
-		Image profAoo = new Image(ClassLoader.getSystemResource("aooprof.png").toString());
-		ImageView ImageAoo = new ImageView(profAoo);
-		ImageAoo.setX(490);
-		ImageAoo.setY(90);
-		ImageAoo.setFitHeight(250);
-		ImageAoo.setFitWidth(250);
-		
+
+		addCredit(root, "Sajakorn Hiranwipas", "iceprof.png", 170, 90, 150, 150);
+		addCredit(root, "Rahut Nopnirapath", "oohprof.png", 490, 90, 485, 150);
+
 		HomeButton homeButton = new HomeButton(stage);
 		homeButton.setLayoutX(10);
 		homeButton.setLayoutY(10);
-        root.getChildren().add(homeButton);
-		
-		root.getChildren().addAll(creditIce,creditAoo,ImageIce,ImageAoo);
+		root.getChildren().add(homeButton);
+
 		return scene;
 
-		
 	}
 
 }

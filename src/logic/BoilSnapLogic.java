@@ -21,34 +21,46 @@ public class BoilSnapLogic {
 	}
 
 	public boolean snapToNearest(Ingredient ingredient) {
-	    var bounds = ingredient.localToScene(ingredient.getBoundsInLocal());
-	    double centerX = bounds.getMinX() + bounds.getWidth() / 2;
-	    double centerY = bounds.getMinY() + bounds.getHeight() / 2;
+		var bounds = ingredient.localToScene(ingredient.getBoundsInLocal());
+		double centerX = bounds.getMinX() + bounds.getWidth() / 2;
+		double centerY = bounds.getMinY() + bounds.getHeight() / 2;
 
-	    double minDistance = Double.MAX_VALUE;
-	    int nearestIndex = -1;
+		int index = findNearestAvailableSlot(centerX, centerY, ingredient);
+		if (index != -1) {
+			snapToSlot(index, ingredient);
+			return true;
+		}
+		return false;
+	}
 
-	    for (int i = 0; i < BOIL_POSITIONS.length; i++) {
-	        if (occupants[i] == null || occupants[i] == ingredient) {
-	            double distance = Math.sqrt(
-	                    Math.pow(centerX - BOIL_POSITIONS[i][0], 2) +
-	                    Math.pow(centerY - BOIL_POSITIONS[i][1], 2));
-	            if (distance < minDistance && distance < 50) {
-	                minDistance = distance;
-	                nearestIndex = i;
-	            }
-	        }
-	    }
+	// find nearest boil position
+	private int findNearestAvailableSlot(double x, double y, Ingredient ingredient) {
+		double minDistance = Double.MAX_VALUE;
+		int nearestIndex = -1;
 
-	    if (nearestIndex != -1) {
-	        double targetX = BOIL_POSITIONS[nearestIndex][0] - ingredient.getBoundsInLocal().getWidth() / 2;
-	        double targetY = BOIL_POSITIONS[nearestIndex][1] - ingredient.getBoundsInLocal().getHeight() / 2;
-	        ingredient.setTranslateX(targetX);
-	        ingredient.setTranslateY(targetY);
-	        occupants[nearestIndex] = ingredient;
-	        return true;
-	    }
-	    return false;
+		for (int i = 0; i < BOIL_POSITIONS.length; i++) {
+			if (occupants[i] == null || occupants[i] == ingredient) {
+				double distance = distance(x, y, BOIL_POSITIONS[i][0], BOIL_POSITIONS[i][1]);
+				if (distance < minDistance && distance < 50) {
+					minDistance = distance;
+					nearestIndex = i;
+				}
+			}
+		}
+		return nearestIndex;
+	}
+
+	// move ingredient to boil position
+	private void snapToSlot(int index, Ingredient ingredient) {
+		double targetX = BOIL_POSITIONS[index][0] - ingredient.getBoundsInLocal().getWidth() / 2;
+		double targetY = BOIL_POSITIONS[index][1] - ingredient.getBoundsInLocal().getHeight() / 2;
+		ingredient.setTranslateX(targetX);
+		ingredient.setTranslateY(targetY);
+		occupants[index] = ingredient;
+	}
+
+	private double distance(double x1, double y1, double x2, double y2) {
+		return Math.hypot(x1 - x2, y1 - y2);
 	}
 
 	public void clearOccupant(Ingredient ingredient) {

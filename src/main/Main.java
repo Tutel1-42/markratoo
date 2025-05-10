@@ -14,55 +14,44 @@ public class Main extends Application {
 
 	public static Scene createMainMenuScene(Stage primaryStage) {
 		Text titleText = new Text("Mookata Sim");
-		titleText.setFont(Font.font(STYLESHEET_CASPIAN, 32));
+		titleText.setFont(Font.font("Verdana", 32));
 
-		Button startButton = new Button("start game");
-		startButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
-		startButton.setStyle("-fx-background-color: #FF7F50;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
-				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
-				+ "-fx-pref-height: 40;");
-		startButton.setOnAction(e -> {
+		Button startButton = createStyledButton("start game", "#FF7F50", () -> {
 			Scene gameScene = GameScene.createGameScene(primaryStage);
 			primaryStage.setScene(gameScene);
 			primaryStage.setTitle("Mookata Sim");
 		});
 
-		Button tutorialButton = new Button("tutorial");
-		tutorialButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
-		tutorialButton.setStyle("-fx-background-color: #20B2AA;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
-				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
-				+ "-fx-pref-height: 40;");
-		tutorialButton.setOnAction(e -> {
+		Button tutorialButton = createStyledButton("tutorial", "#20B2AA", () -> {
 			Scene tutorialScene = TutorialScene.createTutorialScene(primaryStage);
 			primaryStage.setScene(tutorialScene);
 			primaryStage.setTitle("Tutorial");
 		});
-		
-		Button creditButton = new Button("credits");
-		creditButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
-		creditButton.setStyle("-fx-background-color: #45fc03;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
-				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
-				+ "-fx-pref-height: 40;");
-		creditButton.setOnAction(e -> {
+
+		Button creditButton = createStyledButton("credits", "#45fc03", () -> {
 			Scene creditScene = CreditScene.createCreditScene(primaryStage);
 			primaryStage.setScene(creditScene);
 			primaryStage.setTitle("Credit");
 		});
 
-		Button exitButton = new Button("exit");
-		exitButton.setFont(Font.font(STYLESHEET_CASPIAN, 20));
-		exitButton.setStyle("-fx-background-color: #DC143C;" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
-				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
-				+ "-fx-pref-height: 40;");
-		exitButton.setOnAction(e -> {
-			primaryStage.close();
-		});
+		Button exitButton = createStyledButton("exit", "#DC143C", primaryStage::close);
 
-		VBox layout = new VBox(20, titleText, startButton, tutorialButton, creditButton, exitButton); // layout for button
+		VBox layout = new VBox(20, titleText, startButton, tutorialButton, creditButton, exitButton); // layout for
+																										// button
 		layout.setAlignment(Pos.CENTER);
 		layout.setStyle("-fx-background-color: #FFDAB9;");
 
 		return new Scene(layout, 800, 600);
+	}
+
+	private static Button createStyledButton(String text, String bgColor, Runnable action) {
+		Button button = new Button(text);
+		button.setFont(Font.font("Verdana", 20));
+		button.setStyle("-fx-background-color: " + bgColor + ";" + "-fx-text-fill: white;" + "-fx-font-weight: bold;"
+				+ "-fx-background-radius: 10;" + "-fx-padding: 10 20;" + "-fx-pref-width: 200;"
+				+ "-fx-pref-height: 40;");
+		button.setOnAction(e -> action.run());
+		return button;
 	}
 
 	@Override

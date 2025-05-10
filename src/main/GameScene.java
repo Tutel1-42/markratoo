@@ -1,6 +1,5 @@
 package main;
 
-
 import gui.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -28,11 +27,11 @@ public class GameScene {
 		Bin bin = new Bin();
 		bin.setLayoutX(865);
 		bin.setLayoutY(8);
-		
+
 		Tray tray = new Tray();
 		tray.setTranslateX(340);
 		tray.setTranslateY(120);
-		
+
 		ScoreSystem scoreSystem = new ScoreSystem();
 		PlateSnapLogic.init(scoreSystem, root);
 		BinSnapLogic.init(scoreSystem, root);
@@ -44,15 +43,12 @@ public class GameScene {
 		scoreLabel.setLayoutY(470);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
 
-		root.getChildren().addAll(pan, plate, bin, tray, scoreLabel);
-		
 		OrderButton button1 = new OrderButton(root, 20, 50);
-        OrderButton button2 = new OrderButton(root, 20, 270);
-        OrderButton button3 = new OrderButton(root, 180, 50);
-        OrderButton button4 = new OrderButton(root, 180, 270);
-        
-        root.getChildren().addAll(button1,button2,button3,button4);
-		
+		OrderButton button2 = new OrderButton(root, 20, 270);
+		OrderButton button3 = new OrderButton(root, 180, 50);
+		OrderButton button4 = new OrderButton(root, 180, 270);
+
+		root.getChildren().addAll(pan, plate, bin, tray, scoreLabel, button1, button2, button3, button4);
 
 		return scene;
 	}

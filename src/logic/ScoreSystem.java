@@ -9,10 +9,10 @@ public class ScoreSystem {
 	public void addScore(int value) {
 		score.set(score.get() + value);
 	}
-	
+
 	public void reduceScore(int value) {
 		score.set(score.get() - value);
-		if (getScore() < 0)	{
+		if (getScore() < 0) {
 			score.set(0);
 		}
 	}

@@ -4,7 +4,6 @@ import base.Boilable;
 import base.Ingredient;
 import javafx.scene.image.Image;
 
-
 public class Spinach extends Ingredient implements Boilable {
 
 	public Spinach() {

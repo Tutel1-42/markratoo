@@ -29,14 +29,12 @@ public class PlateSnapLogic {
 				scoreSystem.addScore(ingredient.getValue());
 				rootPane.getChildren().remove(ingredient);
 				BoilSnapLogic.getInstance().clearOccupant(ingredient);
-				
 				ContainerRemover.FindContainerThenRemove(rootPane, ingredient);
-				
+
 			} else {
-				ingredient.goBack();
+				ingredient.resetPosition();
 				System.out.println("you can't eat this");
 			}
-
 			return true;
 		}
 		return false;

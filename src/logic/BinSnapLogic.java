@@ -25,13 +25,13 @@ public class BinSnapLogic {
 		double distance = Math.sqrt(Math.pow(centerX - PLATE_CENTER_X, 2) + Math.pow(centerY - PLATE_CENTER_Y, 2));
 
 		if (distance < SNAP_RADIUS && ingredient.isBurnt()) {
-				scoreSystem.reduceScore(ingredient.getValue());
-				rootPane.getChildren().remove(ingredient);
-				BoilSnapLogic.getInstance().clearOccupant(ingredient);
-				
-				ContainerRemover.FindContainerThenRemove(rootPane, ingredient);
-				
-				return true;
+			scoreSystem.reduceScore(ingredient.getValue());
+			rootPane.getChildren().remove(ingredient);
+			BoilSnapLogic.getInstance().clearOccupant(ingredient);
+
+			ContainerRemover.FindContainerThenRemove(rootPane, ingredient);
+
+			return true;
 		}
 		return false;
 	}

@@ -21,7 +21,7 @@ public class TutorialScene {
 		HomeButton homeButton = new HomeButton(stage);
 		homeButton.setLayoutX(10);
 		homeButton.setLayoutY(10);
-        root.getChildren().add(homeButton);
+		root.getChildren().add(homeButton);
 
 		return scene;
 	}
