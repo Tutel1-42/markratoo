@@ -5,7 +5,8 @@ import base.Ingredient;
 public class BoilSnapLogic {
 
 	private static final double[][] BOIL_POSITIONS = { { 590, 240 }, { 850, 240 } };
-
+	private static final double SNAP_RADIUS = 50;
+	
 	private final Ingredient[] occupants;
 	private static BoilSnapLogic instance;
 
@@ -41,7 +42,7 @@ public class BoilSnapLogic {
 		for (int i = 0; i < BOIL_POSITIONS.length; i++) {
 			if (occupants[i] == null || occupants[i] == ingredient) {
 				double distance = distance(x, y, BOIL_POSITIONS[i][0], BOIL_POSITIONS[i][1]);
-				if (distance < minDistance && distance < 50) {
+				if (distance < minDistance && distance < SNAP_RADIUS) {
 					minDistance = distance;
 					nearestIndex = i;
 				}

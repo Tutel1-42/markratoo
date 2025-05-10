@@ -18,15 +18,15 @@ import util.SoundPlayer;
  * functionality, state of ingredients , and image handling.
  */
 
-public abstract class Ingredient extends Pane {
+public class Ingredient extends Pane {
 	private String name;
 	private int value;
 	private boolean isEdible = false;
 	private boolean isBoiled = false;
 	private boolean isBurnt = false;
 	private boolean isGrilled = false;
-	private static final double DEFAULT_POS_X = 370;
-	private static final double DEFAULT_POS_Y = 140;
+	protected static final double DEFAULT_POS_X = 370;
+	protected static final double DEFAULT_POS_Y = 140;
 	private static final long BOIL_DURATION_MS = 4000;
 
 	private Image frontImage;
@@ -34,8 +34,11 @@ public abstract class Ingredient extends Pane {
 
 	protected double mouseX, mouseY;
 	protected double lastPosX, lastPosY = 0;
+	
+	private Thread boilingThread;
+	private boolean isBoiling;
 
-	protected Ingredient(String name, Image frontImage, int value) {
+	public Ingredient(String name, Image frontImage, int value) {
 		this.name = name;
 		this.value = value;
 
@@ -102,7 +105,7 @@ public abstract class Ingredient extends Pane {
 		});
 	}
 
-	private void handleContainerTransfer() {
+	protected void handleContainerTransfer() {
 		if (this.getParent() instanceof Container) {
 			Container container = (Container) this.getParent();
 			container.getChildren().remove(this);
@@ -114,7 +117,7 @@ public abstract class Ingredient extends Pane {
 		}
 	}
 
-	private boolean trySnapToBinOrPlate(MouseEvent event) {
+	protected boolean trySnapToBinOrPlate(MouseEvent event) {
 		if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
 			event.consume();
 			return true;
@@ -154,9 +157,6 @@ public abstract class Ingredient extends Pane {
 //		this.frontImage = image;
 		this.imageView.setImage(image);
 	}
-
-	private Thread boilingThread;
-	private boolean isBoiling;
 
 	public void startBoiling() {
 		if (isBoiled) {

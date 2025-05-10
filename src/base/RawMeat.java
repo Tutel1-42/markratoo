@@ -18,7 +18,7 @@ import util.SoundPlayer;
  * functionality.
  * 
  */
-public abstract class RawMeat extends Ingredient implements Grillable, Boilable {
+public class RawMeat extends Ingredient implements Grillable, Boilable {
 
 	private CookingState frontState = CookingState.RAW;
 	private CookingState backState = CookingState.RAW;
@@ -31,8 +31,6 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 	private static final double GRILL_Y_MIN = 150;
 	private static final double GRILL_Y_MAX = 300;
 	private static final long GRILL_TICK_MS = 1000;
-	private static final double DEFAULT_POS_X = 370;
-	private static final double DEFAULT_POS_Y = 140;
 
 	private Thread grillingThread;
 	private boolean isGrilling;
@@ -90,12 +88,12 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 			isDragging = false;
 
 			if (event.getButton() == MouseButton.PRIMARY) {
-				handleTransferIfInContainer();
+				handleContainerTransfer();
 
-				if (SnapToPlateOrBin(event))
+				if (trySnapToBinOrPlate(event))
 					return;
 
-				if (SnapToGrillOrBoil())
+				if (trySnapToGrillOrBoil())
 					return;
 
 				resetPosition();
@@ -105,31 +103,8 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		});
 	}
 
-	private void handleTransferIfInContainer() {
-		if (this.getParent() instanceof Container container) {
-			container.getChildren().remove(this);
-			((Pane) container.getScene().getRoot()).getChildren().add(this);
 
-			var scenePos = container.localToScene(this.getTranslateX(), this.getTranslateY());
-			this.setTranslateX(scenePos.getX());
-			this.setTranslateY(scenePos.getY());
-		}
-	}
-
-	private boolean SnapToPlateOrBin(MouseEvent event) {
-		if (PlateSnapLogic.getInstance().snapAndConsume(this)) {
-			event.consume();
-			return true;
-		}
-
-		if (BinSnapLogic.getInstance().snapAndConsume(this)) {
-			event.consume();
-			return true;
-		}
-		return false;
-	}
-
-	private boolean SnapToGrillOrBoil() {
+	private boolean trySnapToGrillOrBoil() {
 		double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;
 		double centerY = getBoundsInParent().getMinY() + getBoundsInParent().getHeight() / 2;
 
@@ -175,11 +150,11 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 	private void grillOverTime() {
 		try {
 			if (isGrilling && !theDownSideIsGrilled() && !theDownSideIsBurnt()) {
-				cookSide(4);
+				grillThisSide(4);
 				Platform.runLater(this::grill);
 			}
 			if (isGrilling && !theDownSideIsBurnt()) {
-				cookSide(4);
+				grillThisSide(4);
 				Platform.runLater(this::grill);
 			}
 		} catch (InterruptedException e) {
@@ -187,7 +162,7 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 	}
 
 	// every second print "tick"
-	private void cookSide(int seconds) throws InterruptedException {
+	private void grillThisSide(int seconds) throws InterruptedException {
 		for (int i = 0; i < seconds; i++) {
 			Thread.sleep(GRILL_TICK_MS);
 			System.out.println("tick");
@@ -205,9 +180,9 @@ public abstract class RawMeat extends Ingredient implements Grillable, Boilable 
 		} else {
 			changeImageTo(getFrontImage());
 		}
-		System.out.println(isFrontDown);
-		System.out.println(frontState);
-		System.out.println(backState);
+//		System.out.println(isFrontDown);
+//		System.out.println(frontState);
+//		System.out.println(backState);
 	}
 
 	public boolean theDownSideIsGrilled() {
