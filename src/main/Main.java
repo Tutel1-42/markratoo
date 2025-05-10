@@ -13,13 +13,13 @@ import util.SoundPlayer;
 public class Main extends Application {
 
 	public static Scene createMainMenuScene(Stage primaryStage) {
-		Text titleText = new Text("Virtual Maakatoo");
+		Text titleText = new Text("Virtual Maakratoo");
 		titleText.setFont(Font.font("Verdana", 32));
 
 		Button startButton = createStyledButton("start game", "#FF7F50", () -> {
 			Scene gameScene = GameScene.createGameScene(primaryStage);
 			primaryStage.setScene(gameScene);
-			primaryStage.setTitle("Virtual Maakatoo");
+			primaryStage.setTitle("Virtual Maakratoo");
 		});
 
 		Button tutorialButton = createStyledButton("tutorial", "#20B2AA", () -> {
