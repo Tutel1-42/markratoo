@@ -13,7 +13,7 @@ public abstract class Container extends Pane {
 
 	private Image image;
 	private String ingredientName;
-	private Ingredient ingredient;
+
 	protected static final int DUPLICATE_COUNT = 3;
 	protected List<Ingredient> duplicationList = new ArrayList<Ingredient>();
 
@@ -56,14 +56,6 @@ public abstract class Container extends Pane {
 	public void removeIngredient(Ingredient ingredient) {
 		duplicationList.remove(ingredient);
 		this.getChildren().remove(ingredient);
-	}
-
-	public Ingredient getIngredient() {
-		return ingredient;
-	}
-
-	public void setIngredient(Ingredient ingredient) {
-		this.ingredient = ingredient;
 	}
 
 	public List<Ingredient> getDuplicationList() {

@@ -22,7 +22,7 @@ public class CreditScene {
 		profView.setFitWidth(250);
 
 		Text Fname = new Text(name);
-		Fname.setFont(Font.font("Arial", 28));
+		Fname.setFont(Font.font("Verdana", 28));
 		Fname.setX(Xtext);
 		Fname.setY(Ytext);
 
@@ -35,8 +35,8 @@ public class CreditScene {
 		Scene scene = new Scene(root, 960, 540, Color.web("0xFFC6A0"));
 		root.setStyle("-fx-background-color: #FFC6A0;");
 
-		addCredit(root, "Sajakorn Hiranwipas", "iceprof.png", 170, 90, 150, 150);
-		addCredit(root, "Rahut Nopnirapath", "oohprof.png", 490, 90, 485, 150);
+		addCredit(root, "Sajakorn Hiranwipas\n6731352921", "iceprof.png", 150, 90, 150, 180);
+		addCredit(root, "Rahut Nopnirapath\n6731345521", "oohprof.png", 520, 90, 520, 180);
 
 		HomeButton homeButton = new HomeButton(stage);
 		homeButton.setLayoutX(10);

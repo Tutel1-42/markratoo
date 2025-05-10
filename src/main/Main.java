@@ -13,13 +13,13 @@ import util.SoundPlayer;
 public class Main extends Application {
 
 	public static Scene createMainMenuScene(Stage primaryStage) {
-		Text titleText = new Text("Mookata Sim");
+		Text titleText = new Text("Virtual Maakatoo");
 		titleText.setFont(Font.font("Verdana", 32));
 
 		Button startButton = createStyledButton("start game", "#FF7F50", () -> {
 			Scene gameScene = GameScene.createGameScene(primaryStage);
 			primaryStage.setScene(gameScene);
-			primaryStage.setTitle("Mookata Sim");
+			primaryStage.setTitle("Virtual Maakatoo");
 		});
 
 		Button tutorialButton = createStyledButton("tutorial", "#20B2AA", () -> {
@@ -28,7 +28,7 @@ public class Main extends Application {
 			primaryStage.setTitle("Tutorial");
 		});
 
-		Button creditButton = createStyledButton("credits", "#45fc03", () -> {
+		Button creditButton = createStyledButton("credits", "#9657D5", () -> {
 			Scene creditScene = CreditScene.createCreditScene(primaryStage);
 			primaryStage.setScene(creditScene);
 			primaryStage.setTitle("Credit");
