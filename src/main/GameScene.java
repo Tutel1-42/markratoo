@@ -42,13 +42,18 @@ public class GameScene {
 		scoreLabel.setLayoutX(650);
 		scoreLabel.setLayoutY(470);
 		scoreLabel.textProperty().bind(scoreSystem.scoreProperty().asString("Score: %d"));
+		
+		TimerSystem timerSystem = new TimerSystem();
+		timerSystem.getTimerLabel().setLayoutX(650);
+		timerSystem.getTimerLabel().setLayoutY(445);
+        timerSystem.start();
 
 		OrderButton button1 = new OrderButton(root, 20, 50);
 		OrderButton button2 = new OrderButton(root, 20, 270);
 		OrderButton button3 = new OrderButton(root, 180, 50);
 		OrderButton button4 = new OrderButton(root, 180, 270);
 
-		root.getChildren().addAll(pan, plate, bin, tray, scoreLabel, button1, button2, button3, button4);
+		root.getChildren().addAll(pan, plate, bin, tray, scoreLabel, timerSystem.getTimerLabel(), button1, button2, button3, button4);
 
 		return scene;
 	}
