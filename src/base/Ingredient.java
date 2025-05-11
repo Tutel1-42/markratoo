@@ -34,7 +34,7 @@ public class Ingredient extends Pane {
 
 	protected double mouseX, mouseY;
 	protected double lastPosX, lastPosY = 0;
-	
+
 	private Thread boilingThread;
 	private boolean isBoiling;
 

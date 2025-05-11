@@ -1,16 +1,11 @@
 package base;
 
-import container.Container;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import logic.BinSnapLogic;
 import logic.BoilSnapLogic;
-import logic.PlateSnapLogic;
 import util.SoundPlayer;
 
 /**
@@ -102,7 +97,6 @@ public class RawMeat extends Ingredient implements Grillable, Boilable {
 			}
 		});
 	}
-
 
 	private boolean trySnapToGrillOrBoil() {
 		double centerX = getBoundsInParent().getMinX() + getBoundsInParent().getWidth() / 2;

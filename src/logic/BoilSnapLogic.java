@@ -6,7 +6,7 @@ public class BoilSnapLogic {
 
 	private static final double[][] BOIL_POSITIONS = { { 590, 240 }, { 850, 240 } };
 	private static final double SNAP_RADIUS = 50;
-	
+
 	private final Ingredient[] occupants;
 	private static BoilSnapLogic instance;
 
