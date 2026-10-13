@@ -104,3 +104,8 @@ mvn clean javafx:run
 The full UML class diagram of the project is available in [`docs/`](docs/).
 
 <!-- ![Class Diagram](docs/images/class-diagram.png) -->
+
+## Authors
+ 
+- **Sajakorn Hiranwipas**
+- **Rahut Nopnirapath**
